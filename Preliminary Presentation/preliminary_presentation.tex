@@ -1,0 +1,127 @@
+\documentclass[10pt]{beamer}
+\usepackage[cp1251]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{amsmath,mathrsfs,mathtext}
+\usepackage{graphicx, epsfig}
+\usepackage{array}
+\usepackage{cmap}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shadows,arrows,trees,shapes,fit}
+\usepackage{xcolor}
+\usepackage[noend]{algorithmic}
+\usetikzlibrary{calc,intersections}
+\usetheme{Warsaw}
+\usecolortheme{sidebartab}
+\DeclareMathOperator{\tr}{tr}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\newcommand\undermat[2]{%
+  \makebox[0pt][l]{$\smash{\underbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}_{\text{$#1$}}}$}#2}
+
+\definecolor{beamer@blendedblue}{RGB}{0,0,200}
+
+
+%----------------------------------------------------------------------------------------------------------
+
+
+\title
+{Combinatorial optimization: Max-Cut, Min UnCut and Sparsest Cut Problems}
+\author[M.~Danilova, N.~Puchkin, A.~Shilova]{\large Marina~Danilova, Nikita~Puchkin, 
+Alena~Shilova}
+\institute[Skoltech]{\textsc{Skolkovo Institute of Science and Technology}}
+\date{\footnotesize{March 13, 2017}}
+
+\begin{document}
+
+\AtBeginSection[]
+{
+\begin{frame}{Outline}
+\tableofcontents[
+currentsection,
+sectionstyle=show/shaded,
+subsectionstyle=show/show/shaded
+]
+\end{frame}
+}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+
+\section{Combinatorial Optimization}
+
+	\subsection{Max-Cut}
+	
+		\begin{frame}
+			\frametitle{Max-Cut Problem}
+			
+			Given an undirected weighted graph $G = (V, E, W)$, where
+			\begin{gather*}
+				V  = \{ 1, \dots, n \} \text{ -- set of vertices} \\
+				E \subseteq V \times V \text{ -- set of edges} \\
+				W : E \rightarrow \mathbb R \text{ -- weights} \\
+			\end{gather*}
+			One wants to find a partition $f : V \rightarrow \{0, 1\}$ in order to maximize 
+			the sum of edges in the cut:
+			\[
+				\sum\limits_{(i, j) \in E : f(i) \neq f(j)} w_{ij} \rightarrow \max,
+			\]
+			where $w_{ij}$ stands for weight of the edge $(i, j)$.
+					
+			
+		\end{frame}
+		
+	\subsection{Min UnCut}
+	
+		\begin{frame}
+			\frametitle{Min UnCut Problem}
+			
+			Given an undirected weighted graph $G = (V, E, W)$, one wants to find a 
+			partition $f : \{ 
+			0, 1 \}$ in order to minimize the sum of edges out of the cut:
+			\[
+				\sum\limits_{(i, j) \in E : f(i) = f(j)} w_{ij} \rightarrow \min
+			\]
+			
+			\textsc{Remark.} Let $Opt( MUC )$ and $Opt( MC )$ stand for 
+			optimal solutions of Min UnCut and Max-Cut problems respectively.
+			Then it holds
+			\[
+				Opt( MUC ) + Opt( MC ) = \sum\limits_{(i, j) \in E} w_{ij}
+			\]
+		\end{frame}
+		
+	\subsection{Sparsest Cut}
+	
+		\begin{frame}
+			\frametitle{Sparsest Cut Problem}
+			
+			Given an undirected weighted graph $G = (V, E$ and a capacity function $c 
+			: E \rightarrow \mathbb R_+$.
+			Also given a set of demand pairs $(s_1, t_1), (s_2, t_2), \dots, (s_k, t_k)$ and 
+			demand values $d_1, d_2, \dots, d_k$.
+			One wants to find a set $E' \subseteq E$ minimizing
+			\[
+				\frac{c(E') }{ D(E') } \rightarrow \min,
+			\]
+			where
+			\begin{gather*}
+				c(f) = \sum\limits_{(i, j) \in E'} c_{ij} \\
+				D(f) = \sum\limits_{i : (s_i, t_i) \text{ are separated by } E'} d_i
+			\end{gather*}
+			
+		\end{frame}
+		
+	
+	\begin{frame}
+		\frametitle{}
+		
+		\begin{center}
+			{\LARGE Thank you for attention!}
+		\end{center}
+		
+	\end{frame}
+
+\end{document}
