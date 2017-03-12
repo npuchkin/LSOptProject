@@ -113,9 +113,51 @@ subsectionstyle=show/show/shaded
 			\end{gather*}
 			
 		\end{frame}
-\section{Methods}
+
+\section{Approaches}
+
+	\begin{frame}
+		\frametitle{}
+		
+		Max-Cut, Min UnCut and Sparsest Cut problems are NP-hard
+		
+		\pause
+		\vspace{0.5in}
+		
+		Approaches:
+		\begin{itemize}
+			\item Use naive algorithm of discrete optimization
+			\item Use convex relaxations
+		\end{itemize}
+	\end{frame}
+
+	\subsection{Naive Algorithm}
+
+	\begin{frame}
+		\frametitle{Greedy algorithm}
+		
+		{\Large Idea:}
+		\begin{itemize}
+			\item On the $k$-th iteration choose a point $x_{k+1}$ from neighbourhood 
+			of the current position $x_k$, such that
+			\[
+				\text{Obj}(x_{k+1}) = \text{Obj}(x_k)
+			\]
+			\item If there is no such point $x_{k+1}$ stop and return $x_k$
+		\end{itemize}
+	
+		\vspace{0.2in}
+		{\Large Problems:}
+		\begin{itemize}
+			\item How to choose the neighbourhood?
+			\item How far will be the result from the solution?
+		\end{itemize}
+	
+	\end{frame}
+
 
     \subsection{SDP relaxations}
+
         \begin{frame}{Semi-Definite-Programming}
             The following type of optimisation problems is considered to be the SDP problems:
             \begin{align*}
@@ -149,6 +191,16 @@ subsectionstyle=show/show/shaded
             Such constraints are appropriate for the cut problems on graphs.
             
         \end{frame}
+
+	\begin{frame}
+		\frametitle{Interior Point Method}
+		
+		\begin{itemize}
+			\item One can find solutions of SDP-relaxations via interior-point method
+			\item Use log-det barrier function
+		\end{itemize}
+		
+	\end{frame}
 		
 	
 	\begin{frame}
