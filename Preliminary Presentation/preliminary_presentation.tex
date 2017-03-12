@@ -113,6 +113,42 @@ subsectionstyle=show/show/shaded
 			\end{gather*}
 			
 		\end{frame}
+\section{Methods}
+
+    \subsection{SDP relaxations}
+        \begin{frame}{Semi-Definite-Programming}
+            The following type of optimisation problems is considered to be the SDP problems:
+            \begin{align*}
+                \min_{x \in \mathbb{R}^n} &~c^Tx\\
+                \text{s.t.} &~A_0 - x_1A_1 - \dots x_nA_n \succeq 0
+            \end{align*}
+            
+        \end{frame}
+        
+        \begin{frame}{SDP relaxation}
+        
+            Suppose we have the initial problem:
+            \[
+                \min_{x \in X} f(x),
+            \]
+            where $X$ is a feasible region. If we construct the SDP problem with the $X'$ feasible region, s.t. $X \subseteq X'$, then this SDP problem is considered to be an SDP relaxation for the initial problem.
+            
+            %The quality of relaxation (for maximization problems) can be measured by the integrality gap:
+            %\[
+            %    \text{Integrality Gap} = \frac{\text{OPT} (\text{SDP})}{\text{OPT} (\text{Initial problem})} 
+            %\]
+            
+        \end{frame}
+        
+        \begin{frame}{SDP relaxation with triangle constraints}
+            In order to improve the SDP relaxation one can add triangle constraints like:
+            \begin{align*}
+                &x_{ij} + x_{jk} + x_{ki} \leq 2, \\
+                &x_{ij} + x_{jk} \geq x_{ki}.
+            \end{align*}
+            Such constraints are appropriate for the cut problems on graphs.
+            
+        \end{frame}
 		
 	
 	\begin{frame}
