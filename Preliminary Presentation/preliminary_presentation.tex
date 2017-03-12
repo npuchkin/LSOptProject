@@ -208,8 +208,8 @@ subsectionstyle=show/show/shaded
 	\end{frame}
 	
 	\subsection{LP relaxations}
-        \begin{frame}{MAXCUT}
-            We want to implement LP relaxations for Maximal Cut, Min UnCut and Sparsest cut problems.
+        \begin{frame}{LP relaxations}
+            We want to implement \textbf{LP relaxations} for Maximal Cut, Min UnCut and Sparsest cut problems.
             
             \textbf{For example:} 
             
@@ -229,7 +229,7 @@ subsectionstyle=show/show/shaded
             
         \end{frame}  
         
-        \begin{frame}{LP relaxations for MAXCUT}
+        \begin{frame}{LP relaxation for MAXCUT}
         
         We relax $e_{uv} \in \{0, 1\}$ to $0 \le e_{uv} \le 1$ and $x_{u,v} \in \{0, 1\}$ to $0 \le x_{u,v} \le 1$ to obtain the following LP relation.
             
@@ -249,7 +249,7 @@ subsectionstyle=show/show/shaded
         \end{frame}   
         
     \subsection{First order methods}
-        \begin{frame}{First order methods:}
+        \begin{frame}{First order methods}
             We want to implement the following first order methods for SDP relaxations:
             \begin{enumerate}
                 \item gradient descent;
@@ -258,7 +258,6 @@ subsectionstyle=show/show/shaded
             
         \end{frame}
         
-    \subsubsection{ADMM}
         \begin{frame}{Alternating direction method of multipliers}
             ADMM problem form (with f and g convex):
             \begin{align*}
