@@ -215,5 +215,29 @@ subsectionstyle=show/show/shaded
 		\end{center}
 		
 	\end{frame}
+	
+	\begin{frame}{SDP relaxation for MaxCut}
+	    The following optimisation problem represents the SDP relaxation for MaxCut
+	    \begin{align*}
+	        \min_X &~ \tr(WX),\\
+	        \text{s.t.} &~ X \succeq 0,\\
+	        &~ X_{ii} = 1 ~\forall i.
+	    \end{align*}
+	    Here $W$ is a matrix of weights.
+	    
+	    
+	\end{frame}
+	
+	\begin{frame}{SDP relaxation for Sparsest cut Problem}
+	    Let $x_e = \mathbb{I}\{e \in E'\}$ and $y_i$ represents whether or not the pair $(s_i, t_i)$ should be separated, then we have the following SDP relaxation:
+	    \begin{align*}
+	        \min &~t &\\
+	        \text{s.t.}& &\\ 
+	        &~ \begin{pmatrix} t & 1 \\ c^Tx & d^Ty \end{pmatrix} \succeq 0 &\\
+	        &~ \sum_{e \in p} x_e \geq y_i,  &p \in \mathcal{P}_{s_i t_i} \\
+	        &~ 1 \geq y_i \geq 0  &i \in \overline{1, k} \\
+	        &~ 1\geq x_e \geq 0 & e \in E
+	    \end{align*}
+	\end{frame}
 
 \end{document}
