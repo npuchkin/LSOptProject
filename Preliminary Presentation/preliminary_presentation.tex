@@ -182,6 +182,18 @@ subsectionstyle=show/show/shaded
             %\]
             
         \end{frame}
+	
+	\begin{frame}{SDP relaxation for MaxCut}
+	    The following optimisation problem represents the SDP relaxation for MaxCut
+	    \begin{align*}
+	        \min_X &~ \tr(WX),\\
+	        \text{s.t.} &~ X \succeq 0,\\
+	        &~ X_{ii} = 1 ~\forall i.
+	    \end{align*}
+	    Here $W$ is a matrix of weights.
+	    
+	    
+	\end{frame}
         
         \begin{frame}{SDP relaxation with triangle constraints}
             In order to improve the SDP relaxation one can add triangle constraints like:
@@ -287,17 +299,6 @@ subsectionstyle=show/show/shaded
 		
 	\end{frame}
 	
-	\begin{frame}{SDP relaxation for MaxCut}
-	    The following optimisation problem represents the SDP relaxation for MaxCut
-	    \begin{align*}
-	        \min_X &~ \tr(WX),\\
-	        \text{s.t.} &~ X \succeq 0,\\
-	        &~ X_{ii} = 1 ~\forall i.
-	    \end{align*}
-	    Here $W$ is a matrix of weights.
-	    
-	    
-	\end{frame}
 	
 	\begin{frame}{SDP relaxation for Sparsest cut Problem}
 	    Let $x_e = \mathbb{I}\{e \in E'\}$ and $y_i$ represents whether or not the pair $(s_i, t_i)$ should be separated, then we have the following SDP relaxation:
