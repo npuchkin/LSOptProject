@@ -120,7 +120,8 @@ subsectionstyle=show/show/shaded
 	\begin{frame}
 		\frametitle{}
 		
-		Max-Cut, Min UnCut and Sparsest Cut problems are NP-hard
+		\Large
+		Max-Cut, Min UnCut and Sparsest Cut problems are {\bfseries NP-hard}
 		
 		\pause
 		\vspace{0.5in}
@@ -159,8 +160,8 @@ subsectionstyle=show/show/shaded
 
     \subsection{SDP relaxations}
 
-        \begin{frame}{Semi-Definite-Programming}
-            The following type of optimisation problems is considered to be the SDP problems:
+        \begin{frame}{Semi-Definite Programming}
+            The following type of optimization problems is considered to be the SDP problems:
             \begin{align*}
                 \min_{x \in \mathbb{R}^n} &~c^Tx\\
                 \text{s.t.} &~A_0 - x_1A_1 - \dots x_nA_n \succeq 0
@@ -184,7 +185,7 @@ subsectionstyle=show/show/shaded
         \end{frame}
 	
 	\begin{frame}{SDP relaxation for MaxCut}
-	    The following optimisation problem represents the SDP relaxation for MaxCut
+	    The following optimization problem represents the SDP relaxation for MaxCut
 	    \begin{align*}
 	        \min_X &~ \tr(WX),\\
 	        \text{s.t.} &~ X \succeq 0,\\
@@ -212,11 +213,23 @@ subsectionstyle=show/show/shaded
 	\begin{frame}
 		\frametitle{Interior Point Method}
 		
-		\begin{itemize}
-			\item One can find solutions of SDP-relaxations via interior-point method
-			\item Use log-det barrier function
-		\end{itemize}
-		
+		One can apply interior-point method to the problem
+		\[
+			\begin{cases}
+				\tr(WX) \rightarrow \min\limits_{X \in \mathbb R^{n \times n}} \\
+				X \succeq 0 \\
+				X_{ii} = 1, \quad i = \overline{1, n}
+			\end{cases}
+		\]
+		Use log-det barrier function and solve the problem
+		\[
+			\begin{cases}
+				\tr(WX) - \mu \log\det X \rightarrow \min\limits_{X \in \mathbb R^{n 
+				\times n}} \\
+				X_{ii} = 1, \quad i = \overline{1, n}
+			\end{cases}
+		\]
+		The duality gap is equal to $\mu n$
 	\end{frame}
 	
 	\subsection{LP relaxations}
@@ -227,9 +240,9 @@ subsectionstyle=show/show/shaded
             
             MAXCUT can be phrased as the following integer program.
             \begin{align*}
-                \max \sum\limits_{(u,v) \in E} e_{uv} \\
-                x_u \in \{0,1\} \quad \forall u \in V\\
-                e_{uv} \in \{0,1\} \quad \forall (u,v) \in E
+                \max &\sum\limits_{(u,v) \in E} e_{uv} \\
+                &x_u \in \{0,1\} \quad \forall u \in V\\
+                &e_{uv} \in \{0,1\} \quad \forall (u,v) \in E
             \end{align*}
             \begin{equation*}
                 e_{uv} \le 
@@ -246,9 +259,9 @@ subsectionstyle=show/show/shaded
         We relax $e_{uv} \in \{0, 1\}$ to $0 \le e_{uv} \le 1$ and $x_{u,v} \in \{0, 1\}$ to $0 \le x_{u,v} \le 1$ to obtain the following LP relation.
             
             \begin{align*}
-                \max \sum\limits_{(u,v) \in E} e_{uv} \\
-                x_u \in [0,1] \quad \forall u \in V\\
-                e_{uv} \in [0,1] \quad \forall (u,v) \in E
+                \max &\sum\limits_{(u,v) \in E} e_{uv} \\
+                &x_u \in [0,1] \quad \forall u \in V\\
+                &e_{uv} \in [0,1] \quad \forall (u,v) \in E
             \end{align*}
             \begin{equation*}
                 e_{uv} \le 
@@ -281,11 +294,11 @@ subsectionstyle=show/show/shaded
                 L_r(x,y,z)=f(z) + g(z) + y^{\top}(Ax + Bz - c) + \frac{r}{2}\| Ax + Bz - c\|^2_2
             \end{align*}
             ADMM:
-            \begin{align*}
+            \begin{gather*}
                 x^{k+1}=\argmin_x L_r (x, z^k, y^k), \; \text{x - update},\\
                 z^{k+1}=\argmin_z L_r (x^{k+1}, z, y^k), \; \text{z - update},\\
                 y^{k+1}=y^k + r (Ax^{k+1} + Bz^{k+1} - c), \; \text{dual update}
-            \end{align*}
+            \end{gather*}
             
         \end{frame}
 		
