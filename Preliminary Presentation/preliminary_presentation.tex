@@ -205,6 +205,77 @@ subsectionstyle=show/show/shaded
 		\end{itemize}
 		
 	\end{frame}
+	
+	\subsection{LP relaxations}
+        \begin{frame}{MAXCUT}
+            We want to implement LP relaxations for Maximal Cut, Min UnCut and Sparsest cut problems.
+            
+            \textbf{For example:} 
+            
+            MAXCUT can be phrased as the following integer program.
+            \begin{align*}
+                \max \sum\limits_{(u,v) \in E} e_{uv} \\
+                x_u \in \{0,1\} \quad \forall u \in V\\
+                e_{uv} \in \{0,1\} \quad \forall (u,v) \in E
+            \end{align*}
+            \begin{equation*}
+                e_{uv} \le 
+                \begin{cases}
+                    x_u + x_v \\
+                    2 - (x_u + x_v) \quad \forall (u,v) \in E
+                \end{cases}
+            \end{equation*}
+            
+        \end{frame}  
+        
+        \begin{frame}{LP relaxations for MAXCUT}
+        
+        We relax $e_{uv} \in \{0, 1\}$ to $0 \le e_{uv} \le 1$ and $x_{u,v} \in \{0, 1\}$ to $0 \le x_{u,v} \le 1$ to obtain the following LP relation.
+            
+            \begin{align*}
+                \max \sum\limits_{(u,v) \in E} e_{uv} \\
+                x_u \in [0,1] \quad \forall u \in V\\
+                e_{uv} \in [0,1] \quad \forall (u,v) \in E
+            \end{align*}
+            \begin{equation*}
+                e_{uv} \le 
+                \begin{cases}
+                    x_u + x_v \\
+                    2 - (x_u + x_v) \quad \forall (u,v) \in E
+                \end{cases}
+            \end{equation*}
+            
+        \end{frame}   
+        
+    \subsection{First order methods}
+        \begin{frame}{First order methods:}
+            We want to implement the following first order methods for SDP relaxations:
+            \begin{enumerate}
+                \item gradient descent;
+                \item ADMM.
+            \end{enumerate}
+            
+        \end{frame}
+        
+    \subsubsection{ADMM}
+        \begin{frame}{Alternating direction method of multipliers}
+            ADMM problem form (with f and g convex):
+            \begin{align*}
+                \min_{x, z} &~f(x) + g(z)\\
+                \text{s.t.} &~Ax + Bz = c
+            \end{align*}
+            Augmented Lagrandian:
+            \begin{align*}
+                L_r(x,y,z)=f(z) + g(z) + y^{\top}(Ax + Bz - c) + \frac{r}{2}\| Ax + Bz - c\|^2_2
+            \end{align*}
+            ADMM:
+            \begin{align*}
+                x^{k+1}=\argmin_x L_r (x, z^k, y^k), \; \text{x - update},\\
+                z^{k+1}=\argmin_z L_r (x^{k+1}, z, y^k), \; \text{z - update},\\
+                y^{k+1}=y^k + r (Ax^{k+1} + Bz^{k+1} - c), \; \text{dual update}
+            \end{align*}
+            
+        \end{frame}
 		
 	
 	\begin{frame}
