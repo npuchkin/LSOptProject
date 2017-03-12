@@ -10,7 +10,7 @@
 \usepackage{xcolor}
 \usepackage[noend]{algorithmic}
 \usetikzlibrary{calc,intersections}
-\usetheme{Warsaw}
+\usetheme{Rochester}
 \usecolortheme{sidebartab}
 \DeclareMathOperator{\tr}{tr}
 \setbeamertemplate{caption}{\raggedright\insertcaption\par}
@@ -188,7 +188,11 @@ subsectionstyle=show/show/shaded
                 &x_{ij} + x_{jk} + x_{ki} \leq 2, \\
                 &x_{ij} + x_{jk} \geq x_{ki}.
             \end{align*}
-            Such constraints are appropriate for the cut problems on graphs.
+            Such constraints are appropriate for the cut problems on graphs.In these cases $x_{ij}$ could be:
+            \[
+                x_{ij} = \begin{cases} 1 & \text{if } (i, j) \text{ edge is in the cut,} \\ 
+                0 & \text{otherwise.}\end{cases}
+            \]
             
         \end{frame}
 
