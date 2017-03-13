@@ -99,7 +99,8 @@ subsectionstyle=show/show/shaded
 		\begin{frame}
 			\frametitle{Sparsest Cut Problem}
 			
-			Given an undirected weighted graph $G = (V, E$ and a capacity function $c 
+			Given an undirected weighted graph $G = (V, E)$ and a capacity function 
+			$c 
 			: E \rightarrow \mathbb R_+$.
 			Also given a set of demand pairs $(s_1, t_1), (s_2, t_2), \dots, (s_k, t_k)$ and 
 			demand values $d_1, d_2, \dots, d_k$.
@@ -278,8 +279,8 @@ subsectionstyle=show/show/shaded
         \begin{frame}{First order methods}
             We want to implement the following first order methods for SDP relaxations:
             \begin{enumerate}
-                \item gradient descent;
-                \item ADMM.
+                \item gradient descent
+                \item ADMM
             \end{enumerate}
             
         \end{frame}
@@ -290,9 +291,9 @@ subsectionstyle=show/show/shaded
                 \min_{x, z} &~f(x) + g(z)\\
                 \text{s.t.} &~Ax + Bz = c
             \end{align*}
-            Augmented Lagrandian:
+            Augmented Lagrangian:
             \begin{align*}
-                L_r(x,y,z)=f(z) + g(z) + y^{\top}(Ax + Bz - c) + \frac{r}{2}\| Ax + Bz - c\|^2_2
+                L_r(x,y,z)=f(x) + g(z) + y^{\top}(Ax + Bz - c) + \frac{r}{2}\| Ax + Bz - c\|^2_2
             \end{align*}
             ADMM:
             \begin{gather*}
