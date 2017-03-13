@@ -187,7 +187,7 @@ subsectionstyle=show/show/shaded
 	\begin{frame}{SDP relaxation for MaxCut}
 	    The following optimization problem represents the SDP relaxation for MaxCut
 	    \begin{align*}
-	        \min_X &~ \tr(WX),\\
+	        \min_X &~ \tr(W^T X),\\
 	        \text{s.t.} &~ X \succeq 0,\\
 	        &~ X_{ii} = 1 ~\forall i.
 	    \end{align*}
@@ -199,12 +199,13 @@ subsectionstyle=show/show/shaded
         \begin{frame}{SDP relaxation with triangle constraints}
             In order to improve the SDP relaxation one can add triangle constraints like:
             \begin{align*}
-                &x_{ij} + x_{jk} + x_{ki} \leq 2, \\
-                &x_{ij} + x_{jk} \geq x_{ki}.
+                &d_{ij} + d_{jk} + d_{ki} \leq 2, \\
+                &d_{ij} + d_{jk} \geq d_{ki}.
             \end{align*}
-            Such constraints are appropriate for the cut problems on graphs.In these cases $x_{ij}$ could be:
+            Such constraints are appropriate for the cut problems on graphs.In these cases 
+            $d_{ij}$ could be:
             \[
-                x_{ij} = \begin{cases} 1 & \text{if } (i, j) \text{ edge is in the cut,} \\ 
+                d_{ij} = \begin{cases} 1 & \text{if } (i, j) \text{ edge is in the cut,} \\ 
                 0 & \text{otherwise.}\end{cases}
             \]
             
@@ -216,7 +217,7 @@ subsectionstyle=show/show/shaded
 		One can apply interior-point method to the problem
 		\[
 			\begin{cases}
-				\tr(WX) \rightarrow \min\limits_{X \in \mathbb R^{n \times n}} \\
+				\tr(W^T X) \rightarrow \min\limits_{X \in \mathbb R^{n \times n}} \\
 				X \succeq 0 \\
 				X_{ii} = 1, \quad i = \overline{1, n}
 			\end{cases}
@@ -224,7 +225,7 @@ subsectionstyle=show/show/shaded
 		Use log-det barrier function and solve the problem
 		\[
 			\begin{cases}
-				\tr(WX) - \mu \log\det X \rightarrow \min\limits_{X \in \mathbb R^{n 
+				\tr(W^T X) - \mu \log\det X \rightarrow \min\limits_{X \in \mathbb R^{n 
 				\times n}} \\
 				X_{ii} = 1, \quad i = \overline{1, n}
 			\end{cases}
@@ -312,17 +313,4 @@ subsectionstyle=show/show/shaded
 		
 	\end{frame}
 	
-	
-	\begin{frame}{SDP relaxation for Sparsest cut Problem}
-	    Let $x_e = \mathbb{I}\{e \in E'\}$ and $y_i$ represents whether or not the pair $(s_i, t_i)$ should be separated, then we have the following SDP relaxation:
-	    \begin{align*}
-	        \min &~t &\\
-	        \text{s.t.}& &\\ 
-	        &~ \begin{pmatrix} t & 1 \\ c^Tx & d^Ty \end{pmatrix} \succeq 0 &\\
-	        &~ \sum_{e \in p} x_e \geq y_i,  &p \in \mathcal{P}_{s_i t_i} \\
-	        &~ 1 \geq y_i \geq 0  &i \in \overline{1, k} \\
-	        &~ 1\geq x_e \geq 0 & e \in E
-	    \end{align*}
-	\end{frame}
-
 \end{document}
