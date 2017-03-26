@@ -1,0 +1,328 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amssymb,amsmath}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\textheight=9.5in
+\textwidth=7.5in
+\oddsidemargin=-0.5in
+\topmargin=-1in
+\tolerance=2000
+\flushbottom
+\title{Large-Scale~Optimization~and~Applications~Course~Project\\
+Combinatorial~optimization:~Max-Cut,~Min~Uncut~and~Sparsest~Cut~Problems}
+\author{M.~Danilova, N.~Puchkin, A.~Shilova}
+\date{28 March 2017}
+
+
+\begin{document}
+\maketitle
+
+\section{Combinatorial optimization problems}
+
+We consider three types of combinatorial optimization problems: Max-Cut, Min UnCut 
+and uniform Sparsest Cut.
+Detailed formulation of these problems is given below in corresponding subsections.
+Now we only mention, that all these problems are NP-hard and cannot be solved 
+efficiently if $P \neq NP$.
+
+
+
+\subsection{Max-Cut problem}
+
+The maximal cut problem or Max-Cut can be formulated as follows: given an undirected 
+weighted graph $G = (V, E, W)$, where $V = \{1, \dots, n\}$ is a set of vertices, $E 
+\subseteq V \times V$ is a set of edges and $W$ is a matrix of weights, one wants to find 
+a partition $(S, V\backslash S)$ maximizing the sum of weights of edges in the cut.
+This problem can be formulated as a combinatorial optimization
+\begin{equation}
+\label{maxcut}
+	\begin{cases}
+		\frac12 \sum\limits_{(i, j) \in E} w_{ij} ( 1 - x_i x_j ) \longrightarrow \max \\
+		x_i \in \{ -1, 1 \}, \quad i = \overline{1, n}
+	\end{cases}
+\end{equation}
+This problem is indeed Max-Cut, since the partition can be defined by the formula $S = 
+\{ i : x_i \geq 0 \}$.
+An edge $(i, j)$ belongs to cut if and only if $x_i x_j = -1$.
+The Max-Cut problem \ref{maxcut} can be rewritten as follows:
+\begin{equation}
+\label{maxcut1}
+	\begin{cases}
+		\frac14 \vec 1^T W \vec 1 - \frac14 x^T W x \longrightarrow \max \\
+		x \in \{-1, 1\}^n,
+	\end{cases}
+\end{equation}
+where $\vec 1$ stands for the vector of ones.
+
+
+
+\subsection{Min UnCut problem}
+
+The minimal uncut problem is a complement of the Max-Cut problem and can be 
+formulated as follows.
+Given an undirected weighted graph $G = (V, E, W)$, where $V = \{1, \dots, n\}$ is a set 
+of vertices, $E \subseteq V \times V$ is a set of edges and $W$ is a matrix of weights, 
+one wants to find a partition $(S, V\backslash S)$ minimizing the sum of weights of 
+edges in $S$ and $V \backslash S$.
+In terms of optimization this problem can be formulated as follows:
+\begin{equation}
+\label{minuncut}
+	\begin{cases}
+		\frac14 \vec 1^T W \vec 1 + \frac14 x^T W x \longrightarrow \min \\
+		x \in \{-1, 1\}^n
+	\end{cases}
+\end{equation}
+Indeed, the sum of all edges in the graph $G$ is given by the formula $\frac12 \vec 1^T W 
+\vec 1$. Subtracting the sum of weights of edges in the cut $\frac14 \vec 1^T W \vec 1 - 
+\frac14 x^T W x$, one arrives at the formulation \ref{minuncut}.
+
+
+
+\subsection{Sparsest Cut problem}
+
+Finally, we give a formulation of the uniform Sparsest Cut problem.
+Let $G = (V, E)$, $|V| = n$ stand for a undirected graph and let $S \subseteq V$.
+Denote $E(S)$ a set of edges in $G$ belonging to the cut $(S, V \backslash S)$.
+Then the sparsest cut problem can be formulated as follows:
+\begin{equation}
+\label{spcut}
+	\frac{ |E(S)| }{ |S| \cdot |V \backslash S| } \rightarrow \min\limits_S
+\end{equation}
+Sparsest Cut is related to the following problem.
+Denote $\varphi(S) = \frac{ |E(S)| }{ |S| }$.
+The number $\varphi(S)$ is called a sparsity of the cut $S$.
+The problem of sparsity minimization is formulated as follows:
+\begin{equation}
+\label{sparsity}
+	\varphi(S) \frac{ |E(S)| }{ |S| } \longrightarrow \min\limits_{S : |S| \leq \frac n2}
+\end{equation}
+Since for every cut $S$, $|S| \leq \frac n2$, it holds	$\frac n2 \leq | V \backslash S| \leq 
+n$, then obviously
+\[
+	 \frac{ \varphi(S) }n \leq \frac{ |E(S)| }{ |S| \cdot |V \backslash S| } \leq  \frac{ 
+	 2\varphi(S) }n
+\]
+and the problem \ref{sparsity} can be considered as an upper-bound of the problem 
+\ref{spcut} up to a factor $\frac 2n$.
+
+Modify the problem \ref{spcut}.
+Consider $x \in {-1, 1}^n$ and define $S = \{ i : x_i > 0 \}$.
+Then the number of edges in the cut $|E(S)|$ can be found according to the formula 
+\[
+	| E(S) | = \frac14 \vec 1^T A \vec 1 - \frac14 x^T A x,
+\]
+where $A$ is an adjacency matrix of the graph $G$.
+Now we find expressions for $|S|$ and $|V\backslash S|$.
+Note, that
+\[
+	\sum\limits_{i=1}^n x_i = |S| - |V\backslash S|
+\]
+Then $|S|$ and $|V\backslash S|$ can be found from the system of equations
+\[
+	\begin{cases}
+		|S| - |V\backslash S| = \sum\limits_{i=1}^n x_i\\
+		|S| + |V\backslash S| = n
+	\end{cases}
+\]
+Solving this system, one obtains
+\begin{gather}
+\label{1}
+	|S| = \frac12 \left( n + \sum\limits_{i=1}^n x_i \right) \\
+	|V| = \frac12 \left( n - \sum\limits_{i=1}^n x_i \right)
+\end{gather}
+Then the problem \ref{spcut} can be formulated as follows:
+\begin{equation}
+\label{spcut1}
+	\begin{cases}
+		\frac{ \vec 1^T A \vec 1 - \frac14 x^T A x }{ n^2 - \left( \sum\limits_{i=1}^n x_i 
+		\right)^2 } 
+		\longrightarrow \min \\
+		x \in \{-1, 1\}^n
+	\end{cases}
+\end{equation} 
+
+	
+		
+\section{Greedy algorithm}
+
+In this section we provide a naive greedy algorithm of combinatorial optimization.
+Advantage of this method is simple implementation.
+The pseudocode is given below
+
+\begin{algorithm}[H]
+	\caption{Naive greedy algorithm}
+	\label{greedy}
+	\begin{algorithmic}[1]
+		\Require $F(\cdot)$ -- a functional to minimize
+		\Ensure $x_{greedy}$, $F(x_{greedy})$ -- optimal values
+		\State Initialize $x$ randomly
+		\While{True}
+			\State Get a neighbourhood $\mathcal N(x)$ of the point $x$
+			\State Find $y^* = \arg\min\limits_{y \in \mathcal N(x) \backslash \{x\}} F(y)$ 
+			\If{$F(y^*) \leq F(x)$}
+				\State $x \gets y^*$
+			\Else
+				\State break
+			\EndIf
+		\EndWhile
+		\State {\bf return} $x$, $F(x)$
+	\end{algorithmic}
+\end{algorithm}
+
+Objectives $F(\cdot)$ for Max-Cut, Min UnCut and Sparsest Cut can be taken from 
+problems \ref{maxcut1}, \ref{minuncut} and \ref{spcut1}  respectively with addition a 
+factor $-1$, if necessary.
+It remains to describe, how we choose a neighbourhood $\mathcal N(x)$ of a point $x$.
+For arbitrary $x \in \{-1, 1 \}^n$ define $\mathcal N(x) = \{ y : \| y - x \|_1 \leq 2 \}$.
+In other words, we call $y$ a neighbour of $x$, if it differs from $x$ no more, than in one 
+position.
+Since initial point is generated randomly, one can run the greedy algorithm several times 
+and choose the best value of the objective.
+
+It is easy to observe, that in case of Max-Cut the greedy algorithm on each step chooses 
+a vertex $v$, such that the number of edges from $v$ in the cut is less, than a number of 
+edges from $v$ outside the cut.
+Similarly in case of Min UnCut the greedy algorithm on each step chooses 
+a vertex $v$, such that the number of edges from $v$ outside the cut is less, than a 
+number of edges from $v$ in the cut.
+Thus, in these cases the greedy algorithm gives a 2-approximation of optimal solution.
+
+
+
+
+
+\section{SDP relaxations}
+
+
+
+\subsection{Primal-dual central path tracing interior point method}
+
+Consider an SDP problem
+\begin{equation}
+\label{primal}
+	\begin{cases}
+		\langle C, X \rangle \longrightarrow \min \\
+		X \in \mathcal L - B \\
+		X \succeq 0,
+	\end{cases}
+\end{equation}
+where $\langle C, X \rangle  = \text{Tr}(C^T X)$.
+The dual problem can be formulated as follows
+\begin{equation}
+\label{dual}
+	\begin{cases}
+		\langle B, S \rangle \longrightarrow \max \\
+		S \in \mathcal L^\perp + C \\
+		S \succeq 0
+	\end{cases}
+\end{equation}
+If problems \ref{primal} and \ref{dual} are strictly feasible, then the strong duality takes 
+place.
+We describe an interior point method based on primal-dual central path tracing.
+Consider a pair of modified primal and dual problems
+\begin{equation}
+	X_\mu = \arg\min\limits_{X \in \mathcal L} \langle C, X \rangle - \mu \log\det X
+\end{equation}
+\begin{equation}
+	S_\mu = \arg\max\limits_{S \in \mathcal L^\perp} \langle B, X \rangle + \mu \log\det S
+\end{equation}
+It is known, that $X_\mu S_\mu = S_\mu X_\mu = I$, and duality gap will be equal to 
+$\langle X_\mu, S_\mu \rangle = \mu n$.
+The set $\left\{ (X_\mu, S_\mu) : \mu > 0 \right\}$ defines a so-called primal-dual central 
+path.
+If one can move along the primal-dual central path, then one can easily solve 
+optimization problems \ref{primal}, \ref{dual} with arbitrary predefined accuracy tending 
+$\mu$ to zero.
+Unfortunately, we cannot stay on the primal-dual central path, but we can try to move in 
+its vicinity.
+The following algorithm allows to trace the primal-dual central path.
+\begin{algorithm}[H]
+	\caption{Primal-dual central path tracing IPM}
+	\label{ipm}
+	\begin{algorithmic}[1]
+		\Require Matrices $B$ and $C$ as in problems \ref{primal}, \ref{dual};
+		projectors $\pi_{\mathcal L}(\cdot, Q)$, $\pi_{\mathcal L^\perp}(\cdot, Q)$ on 
+		linear spaces $Q \mathcal L Q$ and $Q^{-1} \mathcal L^\perp Q^{-1}$;
+		parameters $0 \leq \chi \leq \kappa \leq 0.1$;
+		initial values $X \in \mathcal L - B$, $S \in \mathcal L^\perp + C$, $X, S \succ 
+		0$ 
+		and $t$, which fulfil
+		\[	
+			\| t X^{\frac12} S X^{\frac12} - I \|_2 \leq \kappa;
+		\]
+		tolerance $\varepsilon$ and (or) number of iterations $N_{\max}$
+		\Ensure $\varepsilon$-optimal solution $X$
+		\State Compute duality gap $\langle X, S \rangle$
+		\While{$(\text{Duality gap} > \varepsilon)$ or $(\text{number of iterations} < 
+		N_{\max})$}
+			\State $t \gets \left( 1 - \frac\chi{\sqrt{k}} \right)^{-1} t$
+			\State Choose a Nesterov-Todd scaling matrix
+			\begin{gather}
+			\label{nt}
+				 Q = P^\frac12 \\
+			\label{nt1}
+				 P = X^{-\frac12} \left( X^{-\frac12} S^{-1} X^{-\frac12} \right)^\frac12 
+				 X^\frac12 S
+			\end{gather}
+			\State $\hat X \gets Q X Q$
+			\State Solve a Lyapunov matrix equation
+			\begin{equation}
+			\label{lyapunov}
+				\hat X Z + Z \hat X = \frac2t I - 2 \hat X^2
+			\end{equation}
+			\State $\Delta \hat X \gets \pi_{\mathcal L}(Z, Q)$, $\Delta \hat S \gets 
+			\pi_{\mathcal 
+			L^\perp}(Z, Q)$
+			\State $\Delta X \gets Q^{-1} \Delta \hat X Q^{-1}$, $\Delta S \gets Q 
+			\Delta\hat S Q$
+			\State Update $X \gets X + \Delta X$, $S \gets S + \Delta S$, $t \gets \frac 
+			k{\langle X, S \rangle}$
+			\State Compute duality gap $\langle X, S \rangle = \frac kt$ 
+		\EndWhile
+		\State {\bf return} $X$
+	\end{algorithmic}
+\end{algorithm}
+The Nesterov-Todd scaling matrix defined by \ref{nt} -- \ref{nt1} ensures, that matrices 
+$\hat X = Q 
+X Q$ and $\hat S = Q^{-1} S Q^{-1}$ commute and moreover $\hat X = \hat S$. 
+The equation \ref{lyapunov} can be considered as a linearization of the equation
+\[
+	\tilde X \tilde S + \tilde S \tilde X = \frac2t I
+\]
+at the point $(\hat X, \hat S) = (QXQ, Q^{-1} S Q^{-1})$ w.r.t. $X$ and $S$, and $Z = Q 
+\Delta X Q + Q^{-1} \Delta S Q^{-1}$.
+Note, that the algorithm guarantees, that $\Delta X \in \mathcal L$ and $\Delta S \in 
+\mathcal L^\perp$, so the output $X$ is feasible.
+We refer to lectures of Ben-Tal and Nemirovski \cite{nemirovski} for more details.
+
+The next theorem guarantees consistency of the procedure \ref{ipm}.
+\newtheorem{Th}{Theorem}
+\begin{Th}{4.5.2 in \cite{nemirovski}}
+	Let the parameters $\chi$, $\kappa$ of \ref{ipm} satisfy
+	\[
+		0 < \chi \leq \kappa \leq 0.1
+	\]
+	Let $(X, S)$ be a pair of strictly feasible primal and dual solutions to \ref{primal}, 
+	\ref{dual}, such that the triple $(X, S, t)$ satisfies
+	\begin{equation}
+	\label{2}
+		\| t X^{\frac12} S X^{\frac12} - I \|_2 \leq \kappa;
+	\end{equation}
+	Then the updated pair $(X + \Delta X, S + \Delta S)$ is well-defined (i. e. equation 
+	\ref{lyapunov} has a unique solution), $X + \Delta X$, $S + \Delta S$ are strictly 
+	feasible solutions to \ref{primal}, \ref{dual} respectively, and the triple $\left(X + 
+	\Delta X, S + \Delta S, t = \frac k{ \langle X, S \rangle } \right)$ satisfies \ref{2}.
+\end{Th}
+	
+\renewcommand{\refname}{References}
+\begin{thebibliography}{0}
+	\bibitem{nemirovski}
+	A. Ben-Tal, A. Nemirovski, {\it Lectures on Modern Convex Optimization}, (2013)\\ 
+	\verb'http://www2.isye.gatech.edu/~nemirovs/Lect_ModConvOpt.pdf'
+\end{thebibliography}
+\end{document}
