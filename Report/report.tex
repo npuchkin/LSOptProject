@@ -6,6 +6,9 @@
 \usepackage{hyperref}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
+\DeclareMathOperator{\trace}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\rank}{rank}
 
 \textheight=9.5in
 \textwidth=7.5in
@@ -197,6 +200,100 @@ Thus, in these cases the greedy algorithm gives a 2-approximation of optimal sol
 
 
 \section{SDP relaxations}
+
+\subsection{SDP relaxation of Max - Cut problem}
+
+As it was already written earlier the Max-Cut can be formulated as the problem \ref{maxcut1}. In such formulation it is not convex as $x$ can only be equal to $-1$ or to $1$. Let's notice that $\forall x \hookrightarrow x^TWx = \trace (W xx^T) $, therefore if we introduce $X = xx^T$ and $\mathbb{I}$ a matrix containing only ones as elements, then the whole optimisation problem can be rewritten in the following way
+\[
+    \begin{cases}
+        \frac 14 \left(\trace(W \mathbb{I}) - \trace(W X)\right) \longrightarrow \max,  &\\
+        \diag(X) = 1, &\\
+        X \succeq 0, &\\
+        \rank(X) = 1,  &\\
+        X_{i,j} \in \{-1,1\} & \forall i, j.
+    \end{cases}
+\]
+
+It is  still not a convex problem, but we will obtain one if the last two constraints are thrown away. Hence, the SDP relaxation of Max-Cut looks like
+\begin{equation}
+    \label{maxcut_rel}
+    \begin{cases}
+        \frac 14 \left(\trace(W \mathbb{I}) - \trace(W X)\right) \longrightarrow \max\\
+        \diag(X) = 1,\\
+        X \succeq 0.
+    \end{cases}
+\end{equation}
+
+\subsection{Min-UnCut relaxation}
+
+For Min-UnCut SDP relaxation we used the idea described in \cite{Arora}. In the lecture it was suggested to use new graph $G'(V', E')$. In order to construct it, new vertices $\{-1, \dots, -n \}$ should be added to the initial graph. We connect two vertices $i$ and $j$ with an edge in $G'$ if and only if $i$ and $-j$ or $-i$ and $j$ are connected with an edge in $G$. Then the initial problem of finding the cut such that the sum of weights of edges not in the cut was minimal is equivalent to the problem of finding the minimal symmetric cut in $G'$, i.e. $(S', T' = -S')$ and $S' \cup T' = V'$, where $S' \equiv \{ -i | ~i\in S'\} $. That is true if every cut $(S, T)$ in the graph $G$ corresponds to the cut $(S \cup (-T), (-S) \cup T)$ in $G'$ and on the other hand if we have a cut $(S', T')$ in $G'$, then one can easily get the cut in $G$, where $S = \{i|~ i \geq 0, ~i\in S'\}$ and $T = \{i| ~ i \geq 0, ~i\in T' \}$. We can exploit it and then our problem is equivalent to 
+\[
+\begin{cases}
+    \frac 18 \left(\trace(\tilde W \mathbb{I}) - \trace(\tilde W X)\right) \longrightarrow \min,  &\\
+        \diag(X) = 1, &\\
+        X_{i, -i} = -1, &\\
+        X \succeq 0, &\\
+        \rank(X) = 1,  &\\
+        X_{i,j} \in \{-1,1\} & \forall i, j.
+\end{cases}
+\]
+Here we took into account the fact that in the extended graph the number of edges doubles, therefore the coefficient $\frac 18$ is present. $X_{ij}$ has the similar meaning as for Max-Cut problem, but $X_{ij} = -1$ if and only if vertices $i$ and $j$ are separated by the cut in $G'$. Moreover, in this statement
+\[
+\tilde W = \begin{pmatrix} O & W \\ W & O\end{pmatrix}
+\]
+where $W$ is the matrix of weights for $G$. At last, the third constraint binds our cut to be symmetric or to satisfy $(S', T' = -S')$. 
+
+As in the previous case two last constraints prevent this problem from being convex, hence, getting rid of them, we will have the SDP relaxation for Min-UnCut problem.
+\begin{equation}
+    \label{minuncut_rel}
+    \begin{cases}
+        \frac 18 \left(\trace(\tilde W \mathbb{I}) - \trace( \tilde W X)\right) \longrightarrow \min,\\
+        \diag(X) = 1,\\
+        X_{i, -i} = -1,\\
+        X \succeq 0.\\
+    \end{cases}
+\end{equation}
+
+\subsection{Sparsest Cut relaxation}
+
+%Basing on (\ref{spcut1}), TO BE DONE!!!!! 
+
+\subsection{Relaxations with addition of triangle constraints}
+
+If we introduce the metric for our partitioning tasks:
+\[
+d(i,j) = \begin{cases}
+    0 & \text{if $i$ and $j$ are vertices in the same part of the graph,}\\
+    1 & \text{otherwise,}
+\end{cases}
+\]
+which satisfies all the metric conditions, then the variables in the problems mentioned above are connected with the metric in the following way
+\[
+X_{ij} = 1 - 2d(i,j).
+\]
+Taking into account this connection, one can obtain the triangle constraints with our variables, writing those for the metric itself:
+\[
+d(i,j) + d(j, k) \geq d(i,k) \Leftrightarrow X_{ij} + X_{jk} - 1 \leq X_{ik}. 
+\]
+Those expressions should be true for any $i$, $j$ and $k$. Let's denote for any $j$ $E_j = (\mathbf{e}_j, \dots, \mathbf{e}_j)$ and $\mathbf{e}_j$ is a unit vector with 1 on the $j$-th place. From this follows that the constraint above can be rewritten as following:
+\[
+XE_j + E_j^T X - 1 \leq X ~~~~~~~~~~~ \forall j. 
+\]
+
+Beside all the mentioned above, one could notice that for the metric $d(i,j)$ it also holds the fact that
+\[
+d(i,j) + d(j,k) + d(i,k) \leq 2 ~~~~~~~~~~~ \forall i, j, k.
+\]
+Therefore, applying the link between the metric and $X$, we have
+\[
+X_{ij} + X_{jk} + X_{ik} \geq -1 ~~~~~~~~~~~ \forall i, j, k.
+\]
+Rewriting it in the matrix way, we will derive the last triangle constraint:
+\[
+XE_j + E_j^T X + X \geq -1 ~~~~~~~~~~~ \forall j.
+\]
+
+
 
 
 
