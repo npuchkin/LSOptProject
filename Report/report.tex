@@ -257,6 +257,28 @@ As in the previous case two last constraints prevent this problem from being con
 \subsection{Sparsest Cut relaxation}
 
 %Basing on (\ref{spcut1}), TO BE DONE!!!!! 
+Basing on (\ref{spcut1}), we can get the relaxed problem by properly dealeing with the denominator. We want to find $t$, such that $t\Biggl\{ n^2 - \left( \sum\limits_{i=1}^n x_i \right)^2\Biggr\} = 1$. Then introducing as in the previous cases the matrix $X$ with elements $X_{ij} = x_i x_j$ and also a new vector $y = \sqrt{t} x$ and $Y = \{Y_{ij}\}_{i,j = 1}^n$, where $Y_{ij} = y_iy_j = tx_ix_j = tX_{ij}$, one can see that the problem of finding the sparsest cut is equivalent to the following
+\[
+\begin{cases}
+   t \sum\limits_{i,j=1}^n a_{ij} -  \trace(AY) \longrightarrow \min, &\\
+   t n^2 - \sum\limits_{i,j=1}^n Y_{ij}  = 1, &\\
+   \diag(Y) = t, & \\
+   t > 0, &\\
+   \rank(Y), &\\
+   Y_{ij} \in \{\sqrt{t}, -\sqrt{t}\} & \forall i,j.
+\end{cases}
+\]
+Here, as in the cases listed above two last constraints aren't suitable for SDP programming, therefore they should be thrown away. Furthermore, the first constraint can be replaced by $t\Bigl\{ n^2 - \sum\limits_{i,j=1}^n X_{ij} \Bigr\} \geq 1$ equivalently. Finally, in order to make our relaxation be narrower, one may notice that as the number $\Biggl\{ n^2 - \left( \sum\limits_{i=1}^n x_i \right)^2\Biggr\}$ corresponds to the value $|S||V\backslash S|$. There are known upper and lower bounds for this value. The upper bound is $\dfrac{n^2}4$ if $n$ is an even number and $\dfrac{n^2-1}4$ if $n$ is odd. The lower bound is $n-1$. Taking into account all the mentioned, we obtain the SDP relaxation for our problem:
+\begin{equation}
+    \label{spcut_rel}
+    \begin{cases}
+       t \sum\limits_{i,j=1}^n a_{ij} -  \trace(AY) \longrightarrow \min, &\\
+   t n^2 - \sum\limits_{i,j=1}^n Y_{ij} \geq 1, \\
+   \diag(Y) = t,  \\
+    \dfrac1{4(n-1)} \geq t \geq \dfrac1{n^2}. \\
+    \end{cases}
+\end{equation}
+
 
 \subsection{Relaxations with addition of triangle constraints}
 
@@ -292,6 +314,14 @@ Rewriting it in the matrix way, we will derive the last triangle constraint:
 \[
 XE_j + E_j^T X + X \geq -1 ~~~~~~~~~~~ \forall j.
 \]
+As for the SDP relaxation of the sparsest cut problem, in our problem statement there are variables $Y$ and $t$ and $Y$ is connected with $X$ by $Y = tX$ expression. Hence, the formulas presented above should be rewritten for the sparsest cut problem in the following way
+\begin{align*}
+    YE_j + E_j^T Y + Y &\geq -t  &\forall j \\
+    YE_j + E_j^T Y - t &\leq Y  &\forall j
+\end{align*}
+However, due to the slow work of this SDP relaxation, we aren't going to include its results in the report.
+
+
 
 
 
