@@ -323,11 +323,206 @@ However, due to the slow work of this SDP relaxation, we aren't going to include
 
 
 
+\section{LP relaxations}
+
+\subsection{LP relaxation of Max - Cut problem}
+
+We first design an integer program for MAXCUT and then relax it to get a LP.
+
+\textbf{Integer Program Version} Define variables $x_u, u \in V \ $ and $\ e_{uv}, (u,v) \in E$ as follows
+which are supposed to imply the following.
+
+\begin{equation}
+e_{uv} =
+\label{primal}
+	\begin{cases}
+		1 \quad  \text{if} \; (u, v) \; \text{is in cut} \\
+		0 \quad \text{otherwise} 
+	\end{cases}
+\end{equation}
+
+\begin{equation}
+x_u =
+\label{primal}
+	\begin{cases}
+		1 \quad  \text{if} \; u \in S\\
+		0 \quad \text{otherwise} 
+	\end{cases}
+\end{equation}
+
+MAXCUT can now be phrased as the following integer program.
+
+\begin{equation}
+    \begin{cases}
+     \sum\limits_{(u,v) \in E} e_{uv} \longrightarrow \max \\
+	
+		e_{uv} \le \begin{cases}
+		x_u + x_v \\
+		2 - (x_u + x_v)
+	\end{cases}
+	\; \forall (u,v) \in E\\
+
+	x_u \in \{0,1\} \quad \forall u \in V\\
+	
+	e_{uv} \in \{0,1\} \quad \forall (u,v) \in E
+    \end{cases}
+\end{equation}
+
+Notice that $e_{uv} \ne 0 \Longleftrightarrow x_u \ne x_v$.
+
+We now relax $e_{uv} \in \{0,1\} \ \text{to} \ 0 \le e_{uv} \le 1$ and $x_{uv} \in \{ 0,1\}$ to $0 \le x_{uv} \le 1$ to obtain the following LP relaxation.
+
+\begin{equation}
+    \begin{cases}
+    \sum\limits_{(u,v) \in E} e_{uv} \longrightarrow \max \\
+	
+		e_{uv} \le \begin{cases}
+		x_u + x_v \\
+		2 - (x_u + x_v)
+	\end{cases}
+	\; \forall (u,v) \in E\\
+
+	x_u \in [0,1] \quad \forall u \in V\\
+	
+	e_{uv} \in [0,1] \quad \forall (u,v) \in E
+    \end{cases}
+\end{equation}
+
+We can now solve the above LP using an LP-solver. Every solution to the Integer
+Program is also a solution to the Linear Program. 
+
+\textbf{LP relaxation for MaxCut:}
+
+\begin{equation}
+    \begin{cases}
+     \frac14 \vec 1^T W \vec 1 - \frac14 x^T W x \longrightarrow \max \\
+	
+		e_{uv} \le \begin{cases}
+		x_u + x_v \\
+		2 - (x_u + x_v)
+	\end{cases}
+	\; \forall (u,v) \in E\\
+
+	x_u \in [0,1] \quad \forall u \in V\\
+	
+	e_{uv} \in [0,1] \quad \forall (u,v) \in E
+    \end{cases}
+\end{equation}
+
+\subsection{LP relaxation of Min-UnCut problem}
+
+$\quad \ \ $For Min-UnCut SDP relaxation we used the idea described in \cite{Arora} and section $3.2$.
+
+Min UnCut is equivalent to the problem
+of finding a minimum symmetric cut $(S, \bar{S} = -S) \ \text{in} \ G$.
+
+\textbf{LP relaxation for Min-UnCut:}
+
+\begin{equation}
+\begin{cases}
+    \frac18 \vec 1^T \tilde W \vec 1 + \frac18 x^T \tilde W x \longrightarrow \min \\
+        	e_{uv} \ge \begin{cases}
+		x_u + x_v \\
+		2 - (x_u + x_v)
+	\end{cases}
+	\; \forall (u,v) \in E\\
+
+	x_u \in [0,1] \quad \forall u \in V\\
+	
+	e_{uv} \in [0,1] \quad \forall (u,v) \in E
+\end{cases}
+\end{equation}
+
+where
+
+\[
+\tilde W = \begin{pmatrix} O & W \\ W & O\end{pmatrix}
+\]
+
+\subsection{LP relaxation for Sparsest Cut:}
+
+The sparsest cut problem seeks to find
+\begin{equation}
+    \Phi^*= \min\limits_{S \subseteq V} \frac{\bar{w} \ \bar{\delta}_S} {\bar{D} \ \bar{\delta}_S} 
+\end{equation}
+where $\delta_{S_{ij}}$ - cut metric
+\begin{equation}
+    \delta_{S_{ij}} = 
+    \begin{cases}
+        0 \quad \text{if} \ i, j \in S \ \text{or} \ i,j \in \bar{S}\\
+        1 \quad \text{otherwise}
+    \end{cases}
+\end{equation}
+
+non-negative demands $D_{ij}$ between every pair of vertices (in our case $D_{ij} = 1$)
+
+non-negative edge costs (or capacities) $w_{ij}$ between every pair of vertices
+
+
+To form the LP relaxation, we relax the requirement of minimizing over the cut metrics to minimizing
+over all metrics. That is,
+\begin{equation}
+    \lambda^*= \min\limits_{\mathrm{metrics} \ \mathrm{d}} \frac{\bar{w} \ \bar{d}} {\bar{D} \ \bar{d}} 
+\end{equation}
+
+The above relaxation is solved by the following linear program:
+
+\begin{equation}
+    \begin{cases}
+     \sum\limits_{i,j} w_{ij} d_{ij} \longrightarrow \min \\
+	\sum\limits_{i,j} D_{ij} d_{ij} = 1\\
+	d_{ij} + d_{jk} \ge d_{ik} \quad \forall i,j,k\\
+	d_{ij} \ge 0 \quad \forall i,j
+    \end{cases}
+\end{equation}
+
+\section{Gradient descent}
+
+Consider a SDP problem
+
+\begin{equation}
+\label{primal}
+	\begin{cases}
+		\text{Tr} \left( W^{\top} X \right) \longrightarrow \min \\
+		\text{diag} \left( X \right) = 1\\
+		X \succeq 0,
+	\end{cases}
+\end{equation}
+Let's reformulate this problem
+\begin{equation}
+\label{primal}
+	\begin{cases}
+		\text{Tr} \left( W^{\top} X \right) - \mu \log \text{det} X \longrightarrow \min \\
+		\text{diag} \left( X \right) = 1,
+	\end{cases}
+\end{equation}
+Gradient
+\[
+df = \text{Tr} \left[ (W - \mu X^{-1}) \delta X\right]
+\]
+\[
+\nabla f = (W - \mu X^{-1})
+\]
+Step
+\[
+\Delta X = \pi_L \left( \alpha  (W - \mu X^{-1})\right) =  \alpha \pi_L \left(  W - \mu X^{-1}\right)
+\]
+for MaxCut problem 
+\[L = \{z \ | \ z_{ii} = 0 \quad \forall i\}\]
+for Min UnCut problem \[L = \{z \ | \ z_{ii} = 0, z_{i,n+i} = 0, z_{n+i, i} = 0 \quad \forall i\}\]
 
 
 
 
-\subsection{Primal-dual central path tracing interior point method}
+
+
+
+
+
+
+
+
+\section{Primal-dual central path tracing interior point method}
 
 Consider an SDP problem
 \begin{equation}
